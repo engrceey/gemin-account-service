@@ -45,4 +45,9 @@ public class AppUtil {
         }
     }
 
+    public static Long generateAccountNumber() {
+        long accountNumber = (long) (Math.random()*Math.pow(10,10));
+        return accountNumber;
+    }
+
 }
