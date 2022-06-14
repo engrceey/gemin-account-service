@@ -30,7 +30,7 @@ public class Account extends BaseEntity{
 
     @Column(name = "account_balance")
     @Builder.Default
-    private BigDecimal accountBalance = BigDecimal.valueOf(0.0);
+    private BigDecimal accountBalance = BigDecimal.ZERO;
 
     @Column(name = "account_pin", length = 4)
     private String accountPin;

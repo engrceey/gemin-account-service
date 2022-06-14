@@ -31,6 +31,4 @@ public class User extends BaseEntity {
 
     @Column(name = "phone_number", length = 16)
     private String phoneNumber;
-
-
 }
