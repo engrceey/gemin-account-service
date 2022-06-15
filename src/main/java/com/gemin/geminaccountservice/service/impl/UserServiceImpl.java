@@ -1,12 +1,15 @@
 package com.gemin.geminaccountservice.service.impl;
 
 import com.gemin.geminaccountservice.constants.enums.RegisterStatus;
+import com.gemin.geminaccountservice.dto.request.DepositAccountRequestDto;
 import com.gemin.geminaccountservice.dto.request.RegisterUserRequestDto;
 import com.gemin.geminaccountservice.entity.Account;
 import com.gemin.geminaccountservice.entity.User;
 import com.gemin.geminaccountservice.exceptions.ResourceCreationException;
+import com.gemin.geminaccountservice.exceptions.ResourceNotFoundException;
 import com.gemin.geminaccountservice.repository.AccountRepository;
 import com.gemin.geminaccountservice.repository.UserRepository;
+import com.gemin.geminaccountservice.service.TransactionService;
 import com.gemin.geminaccountservice.service.UserService;
 import com.gemin.geminaccountservice.utils.AppUtil;
 import com.gemin.geminaccountservice.utils.ModelMapperUtils;
@@ -24,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
+    private final TransactionService transactionService;
 
     @Override
     @Transactional
@@ -35,7 +39,16 @@ public class UserServiceImpl implements UserService {
         } else if (doesUserAlreadyExist(registerUserRequestDto.getEmail()) &&
                 registerUserRequestDto.getInitialCredit().compareTo(BigDecimal.ZERO) > 0) {
 
-//            Make a transaction
+            User user = getUserByEmail(registerUserRequestDto.getEmail());
+            Account account = accountRepository.getReferenceById(user.getId());
+
+            transactionService.depositFunds(
+                    DepositAccountRequestDto.builder()
+                            .amount(registerUserRequestDto.getInitialCredit())
+                            .sender("self")
+                            .receiverAccountNumber(account.getAccountNumber())
+                            .receiver("self")
+                            .build());
 
         }
 
@@ -59,6 +72,14 @@ public class UserServiceImpl implements UserService {
 
     private boolean doesUserAlreadyExist(String email) {
         return userRepository.getUserByEmail(email).isPresent();
+    }
+
+    private User getUserByEmail(String email) {
+        return userRepository.getUserByEmail(email).orElseThrow(
+                () -> {
+                    throw new ResourceNotFoundException("user not found");
+                }
+        );
     }
 
     private long getNewAccountNumber() {

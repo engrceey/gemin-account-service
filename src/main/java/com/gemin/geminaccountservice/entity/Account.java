@@ -7,6 +7,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -43,8 +44,13 @@ public class Account extends BaseEntity{
     @Column(name = "activated")
     private boolean isActivated = false;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @MapsId
     private User user;
+
+
+    @OneToMany(mappedBy = "account",
+            cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
 
 }
