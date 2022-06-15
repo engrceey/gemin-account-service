@@ -33,28 +33,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public String registerUser(RegisterUserRequestDto registerUserRequestDto) {
         log.info("register user service");
+
         if (doesUserAlreadyExist(registerUserRequestDto.getEmail()) &&
-                 registerUserRequestDto.getInitialCredit().compareTo(BigDecimal.ZERO) == 0) {
+                registerUserRequestDto.getInitialCredit().compareTo(BigDecimal.ZERO) == 0)
+        {
             throw new ResourceCreationException("User already exist");
         } else if (doesUserAlreadyExist(registerUserRequestDto.getEmail()) &&
-                registerUserRequestDto.getInitialCredit().compareTo(BigDecimal.ZERO) > 0) {
-
-            log.info("Here");
-            User user = getUserByEmail(registerUserRequestDto.getEmail());
-            Account account = accountRepository.getReferenceById(user.getId());
-            log.info("here two");
-             transactionService.depositFunds(
-                    DepositAccountRequestDto.builder()
-                            .amount(registerUserRequestDto.getInitialCredit())
-                            .sender("self")
-                            .receiverAccountNumber(account.getAccountNumber())
-                            .receiver("self")
-                            .build());
-             return RegisterStatus.SUCCESS.getRegistrationStatus();
+                registerUserRequestDto.getInitialCredit().compareTo(BigDecimal.ZERO) > 0)
+        {
+            return registerWithTransaction(registerUserRequestDto);
         }
 
         User newUser = new User();
-        ModelMapperUtils.map(registerUserRequestDto,newUser);
+        ModelMapperUtils.map(registerUserRequestDto, newUser);
         userRepository.save(newUser);
 
         Account newAccount = new Account();
@@ -67,6 +58,20 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    private String registerWithTransaction(RegisterUserRequestDto registerUserRequestDto) {
+
+        User user = getUserByEmail(registerUserRequestDto.getEmail());
+        Account account = accountRepository.getReferenceById(user.getId());
+
+        transactionService.depositFunds(
+                DepositAccountRequestDto.builder()
+                        .amount(registerUserRequestDto.getInitialCredit())
+                        .sender("self")
+                        .receiverAccountNumber(account.getAccountNumber())
+                        .receiver("self")
+                        .build());
+        return "Registration with transaction successful";
+    }
 
     private boolean doesAccountAlreadyExit(long accountNumber) {
         return accountRepository.getAccountByAccountNumber(accountNumber).isPresent();
