@@ -43,14 +43,14 @@ public class UserServiceImpl implements UserService {
             User user = getUserByEmail(registerUserRequestDto.getEmail());
             Account account = accountRepository.getReferenceById(user.getId());
             log.info("here two");
-            transactionService.depositFunds(
+             transactionService.depositFunds(
                     DepositAccountRequestDto.builder()
                             .amount(registerUserRequestDto.getInitialCredit())
                             .sender("self")
                             .receiverAccountNumber(account.getAccountNumber())
                             .receiver("self")
                             .build());
-
+             return RegisterStatus.SUCCESS.getRegistrationStatus();
         }
 
         User newUser = new User();
@@ -64,6 +64,7 @@ public class UserServiceImpl implements UserService {
         accountRepository.save(newAccount);
 
         return RegisterStatus.SUCCESS.getRegistrationStatus();
+
     }
 
 

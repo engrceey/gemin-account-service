@@ -5,6 +5,7 @@ import com.gemin.geminaccountservice.dto.request.DepositAccountRequestDto;
 import com.gemin.geminaccountservice.dto.response.ApiResponse;
 import com.gemin.geminaccountservice.dto.response.DepositResponseDto;
 import com.gemin.geminaccountservice.service.TransactionService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,10 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
+    @ApiOperation(
+            value = "Deposit funds",
+            response = DepositResponseDto.class
+    )
     @PostMapping(path = "/deposit-funds")
     public ResponseEntity<ApiResponse<DepositResponseDto>> depositFund(@RequestBody @Valid final DepositAccountRequestDto depositRequestDto) {
         log.info("initiate endpoint to deposit fund [{}] ::", depositRequestDto.getReceiver());

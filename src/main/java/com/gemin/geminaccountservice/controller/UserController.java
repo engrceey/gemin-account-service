@@ -2,7 +2,9 @@ package com.gemin.geminaccountservice.controller;
 
 import com.gemin.geminaccountservice.dto.request.RegisterUserRequestDto;
 import com.gemin.geminaccountservice.dto.response.ApiResponse;
+import com.gemin.geminaccountservice.dto.response.DepositResponseDto;
 import com.gemin.geminaccountservice.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,10 @@ public class UserController {
 
     private final UserService userService;
 
+    @ApiOperation(
+            value = "Register User",
+            response = DepositResponseDto.class
+    )
     @PostMapping(path="/register")
     public ResponseEntity<ApiResponse<String>> registerUser(@RequestBody @Valid final RegisterUserRequestDto registrationRequestDto) {
         log.info("controller register: register user :: [{}] ::", registrationRequestDto.getEmail());
