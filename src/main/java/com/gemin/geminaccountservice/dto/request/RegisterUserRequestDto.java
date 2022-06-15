@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -35,8 +36,8 @@ public class RegisterUserRequestDto {
     @Size(message = "Password must be greater than 6 and less than 20",min = 6, max = 20)
     private String confirmPassword;
 
-
-    private BigDecimal initialCredit = BigDecimal.ZERO;
+    @NotNull
+    private BigDecimal initialCredit;
 
     @NotBlank(message = "email cannot be empty")
     @Size(message = "Phone number character length cannot be less than 11 and more than 16", min = 11, max = 16)
