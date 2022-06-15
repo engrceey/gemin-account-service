@@ -3,6 +3,7 @@ package com.gemin.geminaccountservice.service;
 import com.gemin.geminaccountservice.constants.enums.RegisterStatus;
 import com.gemin.geminaccountservice.dto.request.RegisterUserRequestDto;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ class UserServiceTest {
         registerUserRequestDto = RegisterUserRequestDto.builder().build();
     }
 
+
+    @Disabled
     @Test
     @DisplayName("Register user with zero initial credit")
     void registerUserWithZeroInitialCredit() {
@@ -48,6 +51,8 @@ class UserServiceTest {
 
     }
 
+
+    @Disabled
     @Test
     @DisplayName("Register user with initial credit")
     void registerUserWithInitialCredit() {

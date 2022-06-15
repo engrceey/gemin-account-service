@@ -5,6 +5,7 @@ import com.gemin.geminaccountservice.dto.response.DepositResponseDto;
 import com.gemin.geminaccountservice.dto.response.PaginatedResponse;
 import com.gemin.geminaccountservice.entity.Transaction;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ class TransactionServiceTest {
         depositResponseDto = DepositResponseDto.builder().build();
     }
 
+    @Disabled
     @Test
     @DisplayName("Deposit Fund Service Test")
     void depositFunds() {
@@ -52,6 +54,8 @@ class TransactionServiceTest {
 
     }
 
+
+    @Disabled
     @Test
     @DisplayName("Get Transaction Empty DB")
     void getTransactionsEmptyDB() {
@@ -63,6 +67,8 @@ class TransactionServiceTest {
         assertThat(transactions.getContent().isEmpty()).isTrue();
     }
 
+
+    @Disabled
     @Test
     @DisplayName("Get Transaction")
     void getTransactions() {
