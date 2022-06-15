@@ -32,16 +32,17 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public String registerUser(RegisterUserRequestDto registerUserRequestDto) {
-
+        log.info("register user service");
         if (doesUserAlreadyExist(registerUserRequestDto.getEmail()) &&
                  registerUserRequestDto.getInitialCredit().compareTo(BigDecimal.ZERO) == 0) {
             throw new ResourceCreationException("User already exist");
         } else if (doesUserAlreadyExist(registerUserRequestDto.getEmail()) &&
                 registerUserRequestDto.getInitialCredit().compareTo(BigDecimal.ZERO) > 0) {
 
+            log.info("Here");
             User user = getUserByEmail(registerUserRequestDto.getEmail());
             Account account = accountRepository.getReferenceById(user.getId());
-
+            log.info("here two");
             transactionService.depositFunds(
                     DepositAccountRequestDto.builder()
                             .amount(registerUserRequestDto.getInitialCredit())
