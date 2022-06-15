@@ -13,8 +13,11 @@ import com.gemin.geminaccountservice.repository.AccountRepository;
 import com.gemin.geminaccountservice.repository.TransactionRepository;
 import com.gemin.geminaccountservice.repository.UserRepository;
 import com.gemin.geminaccountservice.service.TransactionService;
+import com.gemin.geminaccountservice.utils.ModelMapperUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,8 +70,16 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PaginatedResponse<Transaction> getTransactions(int start, int limit) {
-        return null;
+        Page<Transaction> transactions = transactionRepository.findAll(PageRequest.of(start, limit));
+        if (transactions.isEmpty()) {
+            throw new ResourceNotFoundException("No Transaction found");
+        }
+        return PaginatedResponse.<Transaction>builder()
+                .content(ModelMapperUtils.mapAll(transactions.getContent(), Transaction.class))
+                .totalElements(transactions.getTotalElements())
+                .build();
     }
 
     private void recordTransaction(DepositResponseDto depositResponseDto, Account account){
