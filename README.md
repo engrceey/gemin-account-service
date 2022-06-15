@@ -15,7 +15,7 @@ Clone application: git clone git@github.com:engrceey/gemin-account-service.git
 From any suitable IDE (IntelliJ Recommended) and with Java installed (Java 8 and Above) run application
 
 
-**Swagger Documentation** available at :: http://localhost:9091/api/v1/swagger-ui/#/
+**Swagger Documentation** available at :: http://localhost:9092/api/v1/gemin/swagger-ui/#/
 
 **H2 DataBase** is available at :: http://localhost:9092/api/v1/gemin/h2-console/
 
