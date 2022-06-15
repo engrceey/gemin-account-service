@@ -1,5 +1,6 @@
 package com.gemin.geminaccountservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gemin.geminaccountservice.constants.enums.AccountCurrency;
 import com.gemin.geminaccountservice.constants.enums.AccountType;
 import lombok.*;
@@ -48,9 +49,9 @@ public class Account extends BaseEntity{
     @MapsId
     private User user;
 
-
     @OneToMany(mappedBy = "account",
             cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Transaction> transactions;
 
 }
