@@ -28,7 +28,7 @@ public class Account extends BaseEntity{
     @Enumerated(value = EnumType.STRING)
     @Column(name = "account_type", length = 10)
     @Builder.Default
-    private AccountType accountType = AccountType.SAVINGS;
+    private AccountType accountType = AccountType.CURRENT;
 
     @Column(name = "account_balance")
     @Builder.Default
@@ -49,8 +49,7 @@ public class Account extends BaseEntity{
     @MapsId
     private User user;
 
-    @OneToMany(mappedBy = "account",
-            cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account")
     @JsonIgnore
     private List<Transaction> transactions;
 
