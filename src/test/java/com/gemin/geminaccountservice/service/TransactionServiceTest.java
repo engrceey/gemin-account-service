@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-
+@SpringBootTest
 class TransactionServiceTest {
 
     @Autowired
@@ -51,7 +51,6 @@ class TransactionServiceTest {
         assertEquals("mr gemini", depositResponseDto.getReceiverName());
         assertEquals(BigDecimal.valueOf(100.0), depositResponseDto.getAmount());
         assertThat(depositResponseDto.isTransactionSuccessful()).isTrue();
-
     }
 
 
@@ -59,7 +58,6 @@ class TransactionServiceTest {
     @Test
     @DisplayName("Get Transaction Empty DB")
     void getTransactionsEmptyDB() {
-
         //WHEN
         PaginatedResponse<Transaction> transactions = transactionService.getTransactions(0, 5);
 
@@ -81,6 +79,5 @@ class TransactionServiceTest {
 
         //THEN
         assertThat(!transactions.getContent().isEmpty()).isTrue();
-
     }
 }
